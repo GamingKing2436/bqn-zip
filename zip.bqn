@@ -3,7 +3,7 @@ LEint←×⟜256⊸+´∘⌽
 
 const⇐{
     key⇐{
-        eocd⇐{⟨sig,disknum,cddisk,cddiskcount,cdcount,cdsize,cd,commentlen,comment⟩↕9}
+        eocd⇐{⟨sig,disknum,cddisk,cddiskcount,cdcount,cdsize,cd,commentlen,comment⟩⇐↕9}
         cdfh⇐{⟨sig,version,minversion,flags,compressiontype,mtime,mdate,crc32,compressedsize,size,namelen,extrafieldlen,commentlen,disk,internalattr,externalattr,fileoffset,name,extrafield,comment⟩⇐↕20}
     }
     keylen⇐{
@@ -13,8 +13,8 @@ const⇐{
 }
 
 EOCD⇐{ # End of central directory record
-    ⟨sig,disknum,cddisk,cddiskcount,cdcount,cdsize,cd,commentlen⟩⇐(+`/⁼+`4‿2‿2‿2‿2‿4‿4‿2)⊔22↑𝕩
-    ⟨disknum,cddisk,cddiskcount,cdcount,cdsize,cd,commentlen⟩↩LEint¨-⟜@⟨disknum,cddisk,cddiskcount,cdcount,cdsize,cd,commentlen⟩
+    o←(+`/⁼+`4‿2‿2‿2‿2‿4‿4‿2)⊔22↑𝕩
+    o↩(LEint¨-⟜@)⌾(⟨const.key.eocd.disknum,const.key.eocd.cddisk,const.key.eocd.cddiskcount,const.key.eocd.cdcount,const.key.eocd.cdsize,const.key.eocd.cd,const.key.eocd.commentlen⟩⊸⊏)o
 }
 CDFH⇐{ # Central directory file header
     ⟨sig,version,minversion,flags,compressiontype,mtime,mdate,crc32,compressedsize,size,namelen,extrafieldlen,commentlen,disk,internalattr,externalattr,fileoffset⟩⇐(+`/⁼+`4‿2‿2‿2‿2‿2‿2‿4‿4‿4‿2‿2‿2‿2‿2‿4‿4)⊔46↑𝕩
