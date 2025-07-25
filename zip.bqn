@@ -60,7 +60,8 @@ Decompress⇐{ # 𝕨 is compression method, 𝕩 is the compressed data
    ;8‿crc‿size𝕊𝕩: crc‿size Deflate 𝕩
    ;𝕨𝕊𝕩:!"Error: Unknown compression type: "∾•Repr𝕨
 }
-Main⇐{
+Zip⇐{
+   𝕊⁼𝕩:
    zi←EOCD ¯62↑𝕩 # zip info
    "NYIError: multipart archive"!0‿0≡1‿2⊏zi # disk number better be 0
    "NYIError: multipart archive"!≡´3‿4⊏zi # every cdfh should be on the same disk
@@ -74,5 +75,7 @@ Main⇐{
    filedata←fcsize↑¨(30+namelen+exlen)↓¨files
    file_contents←(<˘⍉4‿7‿9⊏filei) Decompress¨ filedata # compressiontype‿crc32‿size
    ⟨filei,filedata,file_contents⟩⇐
+   ;𝕊𝕩:
+   !"NYIError: zipping files"
 }
-
+Unzip⇐Zip⁼
