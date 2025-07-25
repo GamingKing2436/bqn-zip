@@ -74,7 +74,7 @@ Zip⇐{
    "Error: central directory file header and local file header don't match"!(field.cdtl/filei)≡○(1⊸↓)⍉>LFH¨files # compare filei and lfilei
    filedata←fcsize↑¨(30+namelen+exlen)↓¨files
    file_contents←(<˘⍉4‿7‿9⊏filei) Decompress¨ filedata # compressiontype‿crc32‿size
-   ⟨filei,filedata,file_contents⟩⇐
+   filei∾file_contents
    ;𝕊𝕩:
    !"NYIError: zipping files"
 }
