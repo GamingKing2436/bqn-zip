@@ -1,4 +1,3 @@
-file⇐•FBytes "/storage/emulated/0/Download/my-keyboard-main.zip"
 Deflate←(•Import"deflate.bqn").Deflate
 LEint←{𝕊𝕩:×⟜256⊸+˜´𝕩;𝕨𝕊⁼𝕩:256|>⌊∘÷`((𝕨⊣4)⥊256)»˜𝕩}
 
