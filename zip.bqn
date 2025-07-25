@@ -1,5 +1,6 @@
 file⇐•FBytes "/storage/emulated/0/Download/my-keyboard-main.zip"
-LEint←×⟜256⊸+´∘⌽
+Deflate←(•Import"deflate.bqn").Deflate
+LEint←{𝕊𝕩:×⟜256⊸+˜´𝕩;𝕨𝕊⁼𝕩:256|>⌊∘÷`((𝕨⊣4)⥊256)»˜𝕩}
 
 m⇐{⟨cdfh,lfh,eocd,dd⟩⇐@+<˘80‿75∾⎉1∘‿2⥊1+↕8} # magic bytes
 field⇐{
@@ -55,13 +56,10 @@ DD⇐{𝕨𝕊𝕩: # Data descriptor
 ParseCD⇐{count𝕊𝕩:
    𝕩{𝕩+46+´LEint˘∘‿2⥊𝕨⊏˜(28+↕6)+𝕩}⍟(1+↕count)0
 }
-Deflate←{𝕊𝕩:
-   !"NYIError:"
-}
 Decompress⇐{ # 𝕨 is compression method, 𝕩 is the compressed data
-   0𝕊𝕩:𝕩
-   8𝕊𝕩:Deflate𝕩
-   𝕨𝕊𝕩:!"Error: Unknown compression type: "∾•Repr𝕨
+   0‿crc‿size𝕊𝕩:𝕩
+   ;8‿crc‿size𝕊𝕩: crc‿size Deflate 𝕩
+   ;𝕨𝕊𝕩:!"Error: Unknown compression type: "∾•Repr𝕨
 }
 Main⇐{
    zi←EOCD ¯62↑𝕩 # zip info
@@ -75,6 +73,7 @@ Main⇐{
    files←(30+namelen+exlen+fcsize+16)↑¨fstart↓¨<𝕩 # 16 to account for possible data descriptor
    "Error: central directory file header and local file header don't match"!(field.cdtl/filei)≡○(1⊸↓)⍉>LFH¨files # compare filei and lfilei
    filedata←fcsize↑¨(30+namelen+exlen)↓¨files
-   file_contents←(4⊏filei) Decompress¨ filedata
+   file_contents←(<˘⍉4‿7‿9⊏filei) Decompress¨ filedata # compressiontype‿crc32‿size
    ⟨filei,filedata,file_contents⟩⇐
 }
+
