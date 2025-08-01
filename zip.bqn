@@ -22,6 +22,8 @@ EOCD⇐{𝕊𝕩: # End of central directory record
    "Error: not a zip file"!m.eocd≡⊑o
    
    (LEint¨-⟜@)⌾(1⊸↓)o
+   ;𝕊⁼𝕩: # to write
+   ∾(field.eocd +⟜@∘(LEint⁼¨)⌾(1⊸↓) ⊢)⌾(8⊸↑) 𝕩
 }
 CDFH⇐{𝕊𝕩: # Central directory file header
    o←field.cdfh/⊸⊔46↑𝕩
@@ -30,6 +32,8 @@ CDFH⇐{𝕊𝕩: # Central directory file header
    ⟨name,extrafield,comment⟩←»⟜""‿""‿""(10‿11‿12⊏o)/⊸(⊣⊔≠⊸↑)46↓𝕩
    
    o∾⟨name,extrafield,comment⟩
+   ;𝕊⁼𝕩: # to write
+   ∾(field.cdfh +⟜@∘(LEint⁼¨)⌾(1⊸↓) ⊢)⌾(17⊸↑) 𝕩
 }
 LFH⇐{𝕊𝕩: # Local file header
    o←field.lfh/⊸⊔30↑𝕩
@@ -39,6 +43,8 @@ LFH⇐{𝕊𝕩: # Local file header
    o↩o DD˜ ¯16↑𝕩
    
    o∾⟨name,extrafield⟩
+   ;𝕊⁼𝕩: # to write
+   ∾(field.lfh +⟜@∘(LEint⁼¨)⌾(1⊸↓) ⊢)⌾(11⊸↑) 𝕩
 }
 
 DD⇐{𝕨𝕊𝕩: # Data descriptor
