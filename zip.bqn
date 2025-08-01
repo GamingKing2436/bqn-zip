@@ -61,6 +61,9 @@ DD⇐{𝕨𝕊𝕩: # Data descriptor
 ParseCD⇐{count𝕊𝕩:
    𝕩{𝕩+46+´LEint˘∘‿2⥊𝕨⊏˜(28+↕6)+𝕩}⍟(1+↕count)0
 }
+
+FindEOCD⇐(¯1⊑·/m.eocd⍷⊢)
+
 Decompress⇐{ # 𝕨 is compression method, 𝕩 is the compressed data
    0‿crc‿size𝕊𝕩:𝕩
    ;8‿crc‿size𝕊𝕩: crc‿size Deflate 𝕩
@@ -68,7 +71,7 @@ Decompress⇐{ # 𝕨 is compression method, 𝕩 is the compressed data
 }
 Pack⇐{
    𝕊⁼𝕩:
-   zi←EOCD ¯62↑𝕩 # zip info
+   zi←EOCD (FindEOCD↓⊢)𝕩 # zip info
    "NYIError: multipart archive"!0‿0≡1‿2⊏zi # disk number better be 0
    "NYIError: multipart archive"!≡´3‿4⊏zi # every cdfh should be on the same disk
    count‿size‿start←4‿5‿6⊏zi
