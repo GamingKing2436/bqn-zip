@@ -73,6 +73,7 @@ Pack⇐{
    files←(30+namelen+exlen+fcsize+16)↑¨fstart↓¨<𝕩 # 16 to account for possible data descriptor
    "Error: central directory file header and local file header don't match"!(field.cdtl/filei)≡○(1⊸↓)⍉>LFH¨files # compare filei and lfilei
    filedata←fcsize↑¨(30+namelen+exlen)↓¨files
+   
    filei∾filedata
    ;𝕊𝕩:
    !"NYIError: zipping files"
