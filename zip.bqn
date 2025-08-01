@@ -60,7 +60,7 @@ Decompress⇐{ # 𝕨 is compression method, 𝕩 is the compressed data
    ;8‿crc‿size𝕊𝕩: crc‿size Deflate 𝕩
    ;𝕨𝕊𝕩:!"Error: Unknown compression type: "∾•Repr𝕨
 }
-Zip⇐{
+Pack⇐{
    𝕊⁼𝕩:
    zi←EOCD ¯62↑𝕩 # zip info
    "NYIError: multipart archive"!0‿0≡1‿2⊏zi # disk number better be 0
@@ -78,4 +78,9 @@ Zip⇐{
    ;𝕊𝕩:
    !"NYIError: zipping files"
 }
+Zip⇐{
+   𝕊⁼𝕩:
+   17‿¯1⊏Pack⁼𝕩
+}
+Unpack⇐Pack⁼
 Unzip⇐Zip⁼
