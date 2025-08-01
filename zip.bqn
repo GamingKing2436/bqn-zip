@@ -73,14 +73,16 @@ Pack⇐{
    files←(30+namelen+exlen+fcsize+16)↑¨fstart↓¨<𝕩 # 16 to account for possible data descriptor
    "Error: central directory file header and local file header don't match"!(field.cdtl/filei)≡○(1⊸↓)⍉>LFH¨files # compare filei and lfilei
    filedata←fcsize↑¨(30+namelen+exlen)↓¨files
-   file_contents←(<˘⍉4‿7‿9⊏filei) Decompress¨ filedata # compressiontype‿crc32‿size
-   filei∾file_contents
+   filei∾filedata
    ;𝕊𝕩:
    !"NYIError: zipping files"
 }
 Zip⇐{
    𝕊⁼𝕩:
-   17‿¯1⊏Pack⁼𝕩
+   filei←Pack⁼𝕩
+   file_contents←((<˘·⍉4‿7‿9⊏⊢) Decompress¨¯1⊸⊏) filei # compressiontype‿crc32‿size
+   
+   (17⊏filei)≍file_contents
 }
 Unpack⇐Pack⁼
 Unzip⇐Zip⁼
