@@ -66,7 +66,7 @@ FindEOCD⇐(¯1⊑·/m.eocd⍷⊢)
 
 Decompress⇐{ # 𝕨 is compression method, 𝕩 is the compressed data
    0‿crc‿size𝕊𝕩:𝕩
-   ;8‿crc‿size𝕊𝕩: crc‿size Deflate 𝕩
+   ;8‿crc‿size𝕊𝕩: crc‿size Deflate⁼ 𝕩
    ;𝕨𝕊𝕩:!"Error: Unknown compression type: "∾•Repr𝕨
 }
 Pack⇐{

@@ -10,7 +10,7 @@ Unjoin←∾⁼⎊(≠⊸↓⊣⊣⊣⁼⌊○≠↑⊢) # dbqn doesn't support 
 
 deflate⇐isPure⊑⟨
    {
-      crc‿size𝕊data:
+      crc‿size𝕊⁼data:
       code‿stdout‿stderr←@⊸+⍟(@>·⊑1⊸↑)¨⌾(1‿2⊸⊏){ # cbqn vs dbqn raw mode fix
          raw⇐1
          stdin⇐inp⇐∾⟨
@@ -29,8 +29,8 @@ deflate⇐isPure⊑⟨
       }•SH"gzip"‿"-d"
       stderr!0=code
       stdout
-      ;crc‿size𝕊⁼data:𝕊⁼data # ignore for now
-      ;𝕊⁼data:
+      ;crc‿size𝕊data:𝕊data # ignore for now
+      ;𝕊data:
       gs←1⊑@⊸+⍟(@>·⊑1⊸↑)¨⌾(1‿2⊸⊏){raw⇐1,stdin⇐inp⇐data}•SH<"gzip" #gzip stream and raw mode fix
       ⟨crc‿size,stream⟩←(LEint˘∘‿4⥊-⟜@)⌾⊑¯8(↑⋈↓)1↓(@+31‿139‿8‿0‿0‿0‿0‿0‿0)Unjoin gs
    }
@@ -38,3 +38,5 @@ deflate⇐isPure⊑⟨
       !"NYIError:"
    }
    ⟩
+
+Inflate⇐Deflate⁼
