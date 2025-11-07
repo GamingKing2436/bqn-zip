@@ -89,12 +89,10 @@ Pack⇐{
    ;𝕊comment‿filei:comment𝕊filei
    ;𝕊𝕩:""𝕊𝕩
    ;comment𝕊𝕩:
-   #!"NYIError: zipping files"
    files←(¯1⊏𝕩)∾¨˜LFH¨⁼m.lfh⌾⊑¨<˘⍉⁼field.cdtl/¯1↓𝕩
    cdfhis←CDFH¨⁼<˘⍉⁼(+`»≠¨files)⌾(16⊸⊏)¯1↓𝕩 # fix file offsets and unparse
    zi←⟨m.eocd,0,0,≠cdfhis,≠cdfhis,≠∾cdfhis,+´≠¨files,≠comment⟩
    ∾⟨∾files,∾cdfhis,EOCD⁼zi,comment⟩
-   #⟨cdfhis,files,zi⟩
 }
 Zip⇐{
    𝕊⁼𝕩:
