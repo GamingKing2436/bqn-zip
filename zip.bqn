@@ -71,7 +71,9 @@ Decompress⇐{ # 𝕨 is compression method, 𝕩 is the compressed data
 }
 Pack⇐{
    𝕊⁼𝕩:
-   zi←EOCD (FindEOCD↓⊢)𝕩 # zip info
+   eocd_bytes←(FindEOCD↓⊢)𝕩
+   zi←EOCD eocd_bytes # zip info
+   comment←eocd_bytes↑˜-¯1⊑zi
    "NYIError: multipart archive"!0‿0≡1‿2⊏zi # disk number better be 0
    "NYIError: multipart archive"!≡´3‿4⊏zi # every cdfh should be on the same disk
    count‿size‿start←4‿5‿6⊏zi
@@ -83,13 +85,20 @@ Pack⇐{
    "Error: central directory file header and local file header don't match"!(field.cdtl/filei)≡○(1⊸↓)⍉>LFH¨files # compare filei and lfilei
    filedata←fcsize↑¨(30+namelen+exlen)↓¨files
    
-   filei∾filedata
-   ;𝕊𝕩:
-   !"NYIError: zipping files"
+   ⟨comment,filei∾filedata⟩
+   ;𝕊comment‿filei:comment𝕊filei
+   ;𝕊𝕩:""𝕊𝕩
+   ;comment𝕊𝕩:
+   #!"NYIError: zipping files"
+   files←(¯1⊏𝕩)∾¨˜LFH¨⁼m.lfh⌾⊑¨<˘⍉⁼field.cdtl/¯1↓𝕩
+   cdfhis←CDFH¨⁼<˘⍉⁼(+`»≠¨files)⌾(16⊸⊏)¯1↓𝕩 # fix file offsets and unparse
+   zi←⟨m.eocd,0,0,≠cdfhis,≠cdfhis,≠∾cdfhis,+´≠¨files,≠comment⟩
+   ∾⟨∾files,∾cdfhis,EOCD⁼zi,comment⟩
+   #⟨cdfhis,files,zi⟩
 }
 Zip⇐{
    𝕊⁼𝕩:
-   filei←Pack⁼𝕩
+   comment‿filei←Pack⁼𝕩
    file_contents←((<˘·⍉4‿7‿9⊏⊢) Decompress¨¯1⊸⊏) filei # compressiontype‿crc32‿size
    
    (17⊏filei)≍file_contents
