@@ -10,7 +10,8 @@ Unjoin←∾⁼⎊(≠⊸↓⊣⊣⊣⁼⌊○≠↑⊢) # dbqn doesn't support 
 
 deflate⇐isPure⊑⟨
    {
-      crc‿size𝕊⁼data:
+      𝕊⁼⟨crc‿size,data⟩:crc‿size𝕊⁼data
+      ;crc‿size𝕊⁼data:
       code‿stdout‿stderr←@⊸+⍟(@>·⊑1⊸↑)¨⌾(1‿2⊸⊏){ # cbqn vs dbqn raw mode fix
          raw⇐1
          stdin⇐inp⇐∾⟨
