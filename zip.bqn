@@ -99,7 +99,7 @@ Zip⇐{
    comment‿filei←Pack⁼𝕩
    file_contents←((<˘·⍉4‿7‿9⊏⊢) Decompress¨¯1⊸⊏) filei # compressiontype‿crc32‿size
    
-   (17⊏filei)≍file_contents
+   ⟨comment,(17⊏filei)≍file_contents⟩
 }
 Unpack⇐Pack⁼
 Unzip⇐Zip⁼
