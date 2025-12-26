@@ -65,7 +65,8 @@ ParseCD⇐{count𝕊𝕩:
 FindEOCD⇐(¯1⊑·/m.eocd⍷⊢)
 
 Decompress⇐{ # 𝕨 is compression method, 𝕩 is the compressed data
-   0‿crc‿size𝕊𝕩:𝕩
+   𝕊⁼𝕩:Deflate 𝕩
+   ;0‿crc‿size𝕊𝕩:𝕩
    ;8‿crc‿size𝕊𝕩: crc‿size Deflate⁼ 𝕩
    ;𝕨𝕊𝕩:!"Error: Unknown compression type: "∾•Repr𝕨
 }
@@ -100,6 +101,13 @@ Zip⇐{
    file_contents←((<˘·⍉4‿7‿9⊏⊢) Decompress¨¯1⊸⊏) filei # compressiontype‿crc32‿size
    
    (17⊏filei)≍file_contents
+   ;𝕊comment‿filei:comment𝕊filei
+   ;𝕊𝕩:""𝕊𝕩
+   ;comment𝕊𝕩:
+   crc‿size‿data‿compressiontype‿name←<˘ ∾⟜<´⌾(1⊸↑)⍟3˘⌾⍉ (⊢(⊢◶⟨0‿0⊸⋈˜,Decompress⁼∘⊣⟩¨⋈¨8⊸×)'/'≠¯1⊑¨⊣)⌾⊏⟜⌽𝕩
+   
+   filei←>(1⊸⊑⟜≢𝕩)⥊¨⟨<m.cdfh,0,10,0,compressiontype, 0,0, crc,compressedsize←≠¨data,size,namelen←≠¨name,0,0,0, 0,16∧'/'=¯1⊑¨name,46+namelen+compressedsize, name,<"",<""⟩
+   Pack filei∾data
 }
 Unpack⇐Pack⁼
 Unzip⇐Zip⁼
