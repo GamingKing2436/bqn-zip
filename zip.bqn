@@ -109,5 +109,23 @@ Zip⇐{
    filei←>(1⊸⊑⟜≢𝕩)⥊¨⟨<m.cdfh,0,10,0,compressiontype, 0,0, crc,compressedsize←≠¨data,size,namelen←≠¨name,0,0,0, 0,16∧'/'=¯1⊑¨name,46+namelen+compressedsize, name,<"",<""⟩
    Pack filei∾data
 }
+
+dir⇐{
+   Bytes⇐{
+      𝕊𝕩:
+      F←•file.RealPath(•wdpath•file.At𝕩)⊸•file.At
+      files←1⊑(⊢(∾⋈˜⊢/˜'d'=•file.Type∘F¨∘⊢)·∾(<•file.At¨•file.List∘F)¨∘⊣)´•_while_(0≢≠∘⊑)⟨""⟩‿⟨⟩
+      ⍉>(⊢◶⟨
+         ⊣⋈•FBytes∘F∘⊣,
+         ∾⟜'/'⋈""˙,
+         ⊣⋈¯1↓⍟((@+10)≡⊑)·(!0≡⊑)⊸⊑∘•SH"readlink"⊸⋈⟜F∘⊣, # unused but fully working
+      ⟩¨)⟜("fdl"⊸⊐•file.Type∘F¨)files
+      ;𝕨𝕊𝕩:
+      F←(•wdpath•file.At𝕨)⊸•file.At
+      •file.CreateDir⍟(¬•file.Exists)F""
+      ∾⟨•file.CreateDir⍟(¬•file.Exists)¨⊣,•FBytes¨⟩<⁼⊸{<𝕎´𝕩}˘⍉(⊢⊔⎉1˜'/'≠¯1⊑¨⊏)F¨⌾⊏𝕩
+   }
+}
+
 Unpack⇐Pack⁼
 Unzip⇐Zip⁼
