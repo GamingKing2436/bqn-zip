@@ -51,12 +51,12 @@ DD⇐{𝕨𝕊𝕩: # Data descriptor
    crc32‿compressedsize‿size←6‿7‿8⊏𝕩
    "Error: crc32 is not null when data descriptor present"!0=crc32
    "Error: sizes are not empty when data descriptor present"!∨´∊⟜⟨0,¯1+2⋆32⟩compressedsize‿size
-   "NYIError: zip64"∨´(¯1+2⋆32)=compressedsize‿size
+   "NYIError: zip64"!∨´(¯1+2⋆32)=compressedsize‿size
    ddfield←⟨4⌾×m.dd≡4↑𝕨,4,4,4⟩
    new←1↓ddfield/⊸⊔(+´ddfield)↑𝕨
    
    new⌾(6‿7‿8⊸⊏)𝕩
-}⍟(2⊸|·÷⟜8 2⊑⊢) # check flag
+}⍟(2⊸|·⌊∘÷⟜8 2⊑⊢) # check flag
 
 ParseCD⇐{count𝕊𝕩:
    𝕩{𝕩+46+´LEint˘∘‿2⥊𝕨⊏˜(28+↕6)+𝕩}⍟(1+↕count)0
@@ -83,7 +83,7 @@ Pack⇐{
    "NYIError: multipart archive"!∧´0=13⊏filei # disk number better be 0
    fcsize‿fsize‿namelen‿exlen‿fstart←<˘8‿9‿10‿11‿16⊏filei
    files←(30+namelen+exlen+fcsize+16)↑¨fstart↓¨<𝕩 # 16 to account for possible data descriptor
-   "Error: central directory file header and local file header don't match"!(field.cdtl/filei)≡○(1⊸↓)⍉>LFH¨files # compare filei and lfilei
+   "Error: central directory file header and local file header don't match"!(field.cdtl/filei)(•Show∘(≡¨)⊢≡)○(1⊸↓)⍉>LFH¨files # compare filei and lfilei
    filedata←fcsize↑¨(30+namelen+exlen)↓¨files
    
    ⟨comment,filei∾filedata⟩
